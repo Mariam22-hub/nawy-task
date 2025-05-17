@@ -1,0 +1,43 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# Build output
+dist/
+build/
+
+# Debugging files
+*.tsbuildinfo
+
+# Dependency directories
+coverage/
+.bnyc_output/
+.nyc_output/
+
+# Temporary files
+.tmp/
+.temp/
+.vscode/
+
+# Database files
+*.sqlite
+*.db
+
+# IDE Specific
+.DS_Store
+Thumbs.db
+
+# NPM lock files
+package-lock.json
+
+# Optional npm cache directory
+.npm/

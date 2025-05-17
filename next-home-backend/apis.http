@@ -1,0 +1,27 @@
+### Create a New Listing
+POST http://localhost:8000/api/v1/
+Content-Type: application/json
+
+{
+  "title": "Zahraa Apartment",
+  "unitNumber": "A-1100",
+  "project": "New cairo Residency",
+  "price": "1",
+  "bedrooms": 2,
+  "bathrooms": 1,
+  "area": 80,
+  "location": "Downtown",
+  "description": "A modern apartment in the city center.",
+  "image": "https://example.com/image.jpg",
+  "type": "rent"
+}
+
+
+
+### Get All Listings
+GET http://localhost:8000/api/v1
+
+
+### Get a Listing by ID
+@Id = 07c93144-0dc5-4c13-8162-53fd1e957860
+GET http://localhost:8000/api/v1/{{Id}}
