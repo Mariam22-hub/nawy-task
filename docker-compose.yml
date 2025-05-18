@@ -1,0 +1,49 @@
+name: nawy-task
+
+services:
+  mongo:
+    image: mongo:7.0.12
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - nawy-task
+
+  backend:
+    build:
+      context: ./next-home-backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./next-home-backend/.env
+    volumes:
+      - ./next-home-backend:/app
+      - /app/node_modules
+    networks:
+      - nawy-task
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongo
+  
+  frontend: 
+    build:
+      context: ./next-home-frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./next-home-frontend/.env
+    volumes:
+      - ./next-home-frontend:/app
+      - /app/node_modules
+    networks:
+      - nawy-task
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
+networks:
+  nawy-task:
+    driver: bridge

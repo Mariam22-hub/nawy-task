@@ -46,6 +46,11 @@ export const ListingSchemaClient = z.object({
     required_error: "Type is required",
     invalid_type_error: "Type must be either 'rent' or 'sale'",
   }),
+
+  image: z
+    .string()
+    .optional()
+    .default(""),
 });
 
 export type ListingClientType = z.infer<typeof ListingSchemaClient>;

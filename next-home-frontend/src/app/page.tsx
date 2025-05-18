@@ -2,7 +2,7 @@ import React from 'react';
 import Listings from '@/components/Listings';
 import Link from 'next/link';
 
-const Home = ({ searchParams }: { searchParams: { page?: string } }) => {
+const Home = ({ searchParams }: { searchParams: { page?: string, search?: string } }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start py-8 px-4">
 

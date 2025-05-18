@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState, useEffect, useState } from "react";
+import React, { startTransition, useActionState, useEffect, useState } from "react";
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -11,6 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ActionResponse } from "@/models/types";
 import { createListingAction } from "@/lib/actions";
 import { useRouter } from "next/navigation";
+import ImageUpload from "./ImageUpload";
+import { useEdgeStore } from "@/lib/edgestore";
+import { Progress } from "@radix-ui/react-progress";
 
 const initialState: ActionResponse = {
   success: false,
@@ -19,13 +22,60 @@ const initialState: ActionResponse = {
 
 export default function CreateListingForm() {
   const [state, action, isPending] = useActionState(createListingAction, initialState);
-  const router = useRouter();  // Correct usage
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [fileToUpload, setFileToUpload] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const router = useRouter();
+  const { edgestore } = useEdgeStore();
+
 
   useEffect(() => {
     if (state.success) {
       router.push("/");
     }
   }, [state.success, router]);
+
+  const uploadImage = async (file: File): Promise<string> => {
+    setIsUploading(true);
+    setUploadProgress(0);
+    try {
+      const res = await edgestore.publicFiles.upload({
+        file,
+        onProgressChange: (progress) => {
+          console.log(progress)
+          setUploadProgress(progress);
+        },
+      });
+      setIsUploading(false);
+      return res.url;
+    } 
+    catch (error) {
+      setIsUploading(false);
+      console.error("Upload failed:", error);
+      throw error;
+    }
+  };
+
+  const handleSubmit = async (formData: FormData) => {
+    try {
+      if (fileToUpload) {
+        const url = await uploadImage(fileToUpload);
+        setImageUrl(url);
+        formData.set("image", url);
+      } 
+      else {
+        formData.delete("image");
+      }
+
+      startTransition(() => {
+        action(formData);
+      });
+    } 
+    catch (error) {
+      console.error("Submission error:", error);
+    }
+  };
 
   return (
     <Card className="w-full max-w-4xl mx-auto mt-7">
@@ -34,7 +84,7 @@ export default function CreateListingForm() {
         <CardDescription>Please enter your listing details below.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={action} className="space-y-6" autoComplete="on">
+        <form action={handleSubmit} className="space-y-6" autoComplete="on">
           <div className="space-y-4">
             {/* Title */}
             <div className="space-y-2">
@@ -226,25 +276,29 @@ export default function CreateListingForm() {
               )}
             </div>
 
-            {/* Image URL */}
-            {/* <div className="space-y-2">
-              <Label htmlFor="image">Image URL</Label>
-              <Input
-                id="image"
-                name="image"
-                type="url"
-                placeholder="https://example.com/property-image.jpg"
-                defaultValue={state.fields?.image}
-                aria-describedby="image-error"
-                className={state?.errors?.image ? 'border-red-500' : ''}
+            {/* Image Upload */}
+            <div className="space-y-2">
+              <Label>Property Image</Label>
+              <ImageUpload 
+                onFileChange={setFileToUpload}
+                defaultImageUrl={state.fields?.image || ""}
               />
               {state?.errors?.image && (
-                <p id="image-error" className="text-sm text-red-500">
+                <p className="text-sm text-red-500">
                   {state.errors.image[0]}
                 </p>
               )}
-            </div> */}
+            </div>
           </div> 
+
+          {isUploading && (
+          <div className="space-y-2">
+            <Progress value={uploadProgress} className="h-2 w-full" />
+            <p className="text-sm text-gray-500 text-center">
+              {Math.round(uploadProgress)}% uploaded
+            </p>
+          </div>
+          )}
 
           {state.message && (
             <Alert className={state.success ? "bg-green-50" : "bg-red-50"}>
@@ -255,9 +309,9 @@ export default function CreateListingForm() {
           <Button 
             type="submit" 
             className="w-full bg-blue-950"
-            disabled={isPending}
+            disabled={isPending || isUploading}
           >
-            {isPending ? 'Adding Listing...' : 'Add Listing'}
+            {isPending || isUploading? 'Adding Listing...' : 'Add Listing'}
           </Button>
         </form>
       </CardContent>

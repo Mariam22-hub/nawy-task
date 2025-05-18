@@ -20,7 +20,7 @@ const ListingSchema = new Schema<IListing>(
   {
     _id: {type: String, default: uuidv4},
     title: { type: String, required: true, minlength: 3 },
-    unitNumber: { type: String, required: true, unique: true },
+    unitNumber: { type: String, required: true },
     project: { type: String, required: true, minlength: 3 },
     price: { type: String, required: true },
     bedrooms: { type: Number, required: true, min: 1, max: 10 },
@@ -28,7 +28,7 @@ const ListingSchema = new Schema<IListing>(
     area: { type: Number, required: true, min: 20 },
     location: { type: String, required: true, minlength: 3 },
     description: { type: String, required: true, minlength: 10 },
-    image: { type: String, required: false },
+    image: { type: String, required: false, default: "" },
     type: { type: String, enum: ["rent", "sale"], required: true },
   },
   {

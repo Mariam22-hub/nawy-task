@@ -8,10 +8,6 @@ import SearchBar from './SearchBar';
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // const handleSearch = (query: string) => {
-  //   console.log('Search query:', query);
-  // };
-
   return (
     <header className="bg-slate-200 shadow-md p-2">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">

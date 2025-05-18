@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import { AiOutlineNumber } from "react-icons/ai";
 import { ListingType } from "@/models/types";
-import { fetchListingById } from "@/lib/api";
+import { fetchListingById } from "@/app/api/listing_apis";
 
 interface Props {
   params: {
@@ -46,7 +46,7 @@ const ListingDetails = async ({ params }: Props) => {
     <main className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <img
-          // src={null}
+          src={listing.image === "" ? "https://www.example.com" : listing.image}
           alt={listing.title}
           className="w-full h-64 sm:h-80 md:h-96 lg:h-[400px] object-cover"
         />

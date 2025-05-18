@@ -9,7 +9,7 @@ export type ListingType = {
   area: number;
   location: string;
   description: string;
-  image: string;
+  image?: string;
   type: string
 };
 
@@ -33,7 +33,7 @@ export function extractListingFromFormData(formData: FormData): ListingType {
     area: parseFloat(formData.get("area")?.toString() ?? "0"),
     location: formData.get("location")?.toString() ?? "",
     description: formData.get("description")?.toString() ?? "",
-    image: "", 
+    image: formData.get("image")?.toString() ?? "", 
     type: formData.get("type")?.toString() ?? "rent",
   };
 }

@@ -3,41 +3,30 @@ import next from "next";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
-interface ListingsResponse {
-  listings: ListingType[];
-  total: number;
-  totalPages: number;
-  currentPage: number;
-}
 
-export async function fetchListings(page: number, limit:number): Promise<ListingsResponse> {
+export const fetchListings = async (page: number, limit: number, search: string = "") => {
   try {
-    const response = await fetch(`${API_URL}/v1?page=${page}&limit=${limit}`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      next: { revalidate: 60 },
-    });
+    const query = new URLSearchParams({ page: String(page), limit: String(limit), search }).toString();
+    const response = await fetch(`${API_URL}/v1/?${query}`, {
+        next: { revalidate: 60 }
+      });
 
     if (!response.ok) {
-      throw new Error(`Error fetching listings: ${response}`);
+      throw new Error("Failed to fetch listings");
     }
 
-    return response.json()
-    // return data;
+    return await response.json();
   } 
   catch (error) {
-    console.error('Failed to fetch listings:', error);
-    throw error;
+    console.error("Error fetching listings:", error);
+    return { listings: [], totalPages: 1 };
   }
-}
+};
 
 export async function fetchListingById(id: string): Promise<ListingType> {
   try {
-    const response = await fetch(`${API_URL}/v1/${id}`, {
-      cache: "no-store"
+    const response = await fetch(`${API_URL}/v1/${id}`,
+      {next: { revalidate: 60 }
     });
     
     if (!response.ok) {

@@ -1,6 +1,6 @@
 "use server"
 
-import { createListing } from "@/lib/api";
+import { createListing } from "@/app/api/listing_apis";
 import { revalidatePath } from "next/cache";
 import { ListingSchemaClient } from "./validation";
 import { ActionResponse, extractListingFromFormData, ListingType } from "@/models/types";
@@ -11,7 +11,7 @@ Promise<ActionResponse> {
   try {
     const data = extractListingFromFormData(formData);
     const validatedData = ListingSchemaClient.safeParse(data);
-
+    
     if (!validatedData.success){
       console.log("error returned data", formData);
       
@@ -22,6 +22,8 @@ Promise<ActionResponse> {
         fields: data
       }
     }
+
+
 
     await createListing(data);
     revalidatePath("/"); 
