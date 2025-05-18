@@ -101,7 +101,7 @@ Backend API base URL: http://localhost:8000/api/v1 (All apis are prefixed by `ap
 | GET    | `/api/v1/listings/:id` | Get listing details by UUID      |
 
 #### API Validation
-Backend uses middleware validation (Zod) with ListingSchemaDTO to ensure request data correctness.
+Backend & Frontend uses middleware validation (Zod) with ListingSchemaDTO to ensure request data correctness.
 
 ## Swagger API Documentation
 You can access the Swagger UI to explore and test backend API endpoints at:
