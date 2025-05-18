@@ -48,7 +48,7 @@ PORT=8000
 Create a file named `.env` inside `next-home-frontend` folder:
 Create an account at [https://edgestore.dev/](EdgeStore)
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8000/api
+NEXT_PUBLIC_API_URL=http://backend:8000/api
 NEXT_PUBLIC_LISTINGS_LIMIT=6
 
 # EdgeStore credentials for image upload service
