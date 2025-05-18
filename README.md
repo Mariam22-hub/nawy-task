@@ -46,7 +46,7 @@ PORT=8000
 ### Frontend `.env`
 
 Create a file named `.env` inside `next-home-frontend` folder:
-Create an account at [https://edgestore.dev/](EdgeStore)
+Create an account at [https://edgestore.dev/](EdgeStore) -> Create a new project -> Get the access & secret keys
 ```env
 NEXT_PUBLIC_API_URL=http://backend:8000/api
 NEXT_PUBLIC_LISTINGS_LIMIT=6
