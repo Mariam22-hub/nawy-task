@@ -113,11 +113,6 @@ You can access the Swagger UI to explore and test backend API endpoints at:
 - The frontend limits the number of listings per page via NEXT_PUBLIC_LISTINGS_LIMIT.
 - You can customize MongoDB URI and ports in the .env files as needed.
 - If running MongoDB locally, ensure it's accessible at the URI you configure.
-
-![]([http://url/to/img.png](https://ibb.co/0VRyCHk5)
-![]([http://url/to/img.png](https://ibb.co/zh6ZG45D)
-![]([http://url/to/img.png](https://ibb.co/zWxKGXcn)
-![]([http://url/to/img.png](https://ibb.co/Q7C7QFW0)
-![]([[http://url/to/img.png](https://ibb.co/yFZ4qdN3)
+- When you first open the website, "No listing found" will appear. You should upload 
 
 
